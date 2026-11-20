@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Pixel Arcade</title>
+<meta name="description" content="14 tiny offline pixel games: Dragon Run, Snake, Breakout, 2048 and more.">
+<meta name="theme-color" content="#f7f7f7">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Pixel Arcade">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #f7f7f7;
+    -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; touch-action: none; }
+  canvas { display: block; width: 100vw; height: 100vh; height: 100dvh; }
+  #rotate { display: none; position: fixed; inset: 0; background: #f7f7f7; color: #535353;
+    font: bold 16px "Courier New", monospace; text-align: center; flex-direction: column;
+    align-items: center; justify-content: center; gap: 18px; padding: 24px; box-sizing: border-box; }
+  #rotate .phone { width: 46px; height: 78px; border: 4px solid #535353; border-radius: 8px;
+    animation: turn 2.2s ease-in-out infinite; }
+  #rotate small { font-size: 12px; opacity: 0.7; }
+  @keyframes turn { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+  @media (orientation: portrait) and (pointer: coarse) { #rotate.show { display: flex; } }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="rotate" class="show">
+  <div class="phone"></div>
+  <div>Turn your phone sideways</div>
+  <small>or tap to play anyway</small>
+</div>
+<script src="core.js"></script>
+<script src="g_dragon.js"></script>
+<script src="g_cave.js"></script>
+<script src="g_flip.js"></script>
+<script src="g_copter.js"></script>
+<script src="g_stack.js"></script>
+<script src="g_snake.js"></script>
+<script src="g_breakout.js"></script>
+<script src="g_asteroids.js"></script>
+<script src="g_invaders.js"></script>
+<script src="g_2048.js"></script>
+<script src="g_sweeper.js"></script>
+<script src="g_memory.js"></script>
+<script>
+  A.boot();
+  // "Turn sideways" tip: tapping it hides it for this visit
+  var rot = document.getElementById('rotate');
+  function hideRot(e) { e.preventDefault(); rot.classList.remove('show'); }
+  rot.addEventListener('touchstart', hideRot, { passive: false });
+  rot.addEventListener('mousedown', hideRot);
+  // Offline support: after the first visit the games keep working without internet
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+  }
+</script>
+</body>
+</html>
